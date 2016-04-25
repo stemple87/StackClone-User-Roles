@@ -48,7 +48,7 @@ namespace StackOverflow.Controllers
             _db.Answers.Add(answer);
             _db.SaveChanges();
             return RedirectToAction("Details", "Question", new { id = answer.QuestionId});
-            //return View("Question", "Index");
+            
         }
 
     }
