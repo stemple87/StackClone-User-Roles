@@ -11,6 +11,6 @@
 
 @foreach (var questions in Model)
 {
-    <p>@Html.DisplayFor(x => questions.Title)</p>
-   
+    <a href=@Url.Action("Details", "Question", new { id = @questions.QuestionId })><span>@questions.Title</span></a>
+
 }

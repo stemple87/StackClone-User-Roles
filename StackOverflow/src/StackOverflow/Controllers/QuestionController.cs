@@ -50,5 +50,13 @@ namespace StackOverflow.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Details(int id)
+        {
+            var questionDetail = _db.Questions
+                .FirstOrDefault(x => x.QuestionId == id);
+
+            return View(questionDetail); 
+        }
+
     }
 }
