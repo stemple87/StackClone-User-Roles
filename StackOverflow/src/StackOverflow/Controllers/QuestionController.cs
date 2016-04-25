@@ -10,9 +10,6 @@ using StackOverflow.ViewModels;
 using Microsoft.AspNet.Authorization;
 using Microsoft.Data.Entity;
 
-
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace StackOverflow.Controllers
 {
     [Authorize]
@@ -40,6 +37,7 @@ namespace StackOverflow.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(Question question)
         {
@@ -52,11 +50,31 @@ namespace StackOverflow.Controllers
 
         public IActionResult Details(int id)
         {
-            var questionDetail = _db.Questions
+            var questionDetail = _db.Questions.Include(x => x.Answers).ToList()
                 .FirstOrDefault(x => x.QuestionId == id);
-
+                
             return View(questionDetail); 
         }
+
+        //public IActionResult Answer(int id)
+        //{
+        //    ViewBag.question = id;
+
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Answer(Answer answer)
+        //{
+        //    var QuestionId = QuestionId
+
+        //    var currentUser = await _userManager.FindByIdAsync(User.GetUserId());
+        //    answer.User = currentUser;
+        //    answer.Question = QuestionId;
+        //    _db.Answers.Add(answer);
+        //    _db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
     }
 }

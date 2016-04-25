@@ -6,6 +6,17 @@
 
 @model StackOverflow.Models.Question
 
-<h2>@Model.Title</h2>
+<h2>@Html.DisplayFor(x => x.Title)</h2>
 
-<p>@Model.Detail</p>
+<p>@Html.DisplayFor(x => x.Detail)</p>
+
+ASKED BY
+<p>@Html.DisplayFor(x => x.User.UserName)</p>
+
+@foreach(var answers in Model.Answers)
+{
+    <p>@Html.DisplayFor(x => answers.Details)</p>
+    <p>@Html.DisplayFor(x => answers.User.UserName)</p>
+}
+
+<a href=@Url.Action("Answer", "Answer", new { @Model.QuestionId })><span>Submit and Answer</span></a>

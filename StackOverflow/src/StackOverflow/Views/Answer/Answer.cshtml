@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model StackOverflow.Models.Answer
+
+@using (Html.BeginForm())
+{
+
+    <label>Title</label> <br />
+    @Html.EditorFor(model => model.Details)
+
+
+    <input type="submit" value="Answer"/>
+}
+
