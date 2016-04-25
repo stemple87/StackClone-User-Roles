@@ -37,7 +37,8 @@ namespace StackOverflow.Controllers
         [HttpPost]
         public async Task<IActionResult> Answer(Answer answer)
         {
-           
+            var theId = ViewBag.question;
+
             var currentUser = await _userManager.FindByIdAsync(User.GetUserId());
 
             //var currentQuestion = await _userManager.FindByIdAsync(User.GetQuestionId());
@@ -46,7 +47,8 @@ namespace StackOverflow.Controllers
             //answer.Question = QuestionId;
             _db.Answers.Add(answer);
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Question", new { id = answer.QuestionId});
+            //return View("Question", "Index");
         }
 
     }
