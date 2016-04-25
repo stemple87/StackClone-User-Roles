@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using StackOverflow.Models;
 using Microsoft.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using StackOverflow.Models;
 
 namespace StackOverflow
 {
     public class Startup
     {
         public IConfigurationRoot Configuration { get; set; }
-
         public Startup()
         {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json");
             Configuration = builder.Build();
         }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
             services.AddEntityFramework()
                 .AddSqlServer()
                 .AddDbContext<ApplicationDbContext>(options =>
@@ -40,16 +33,13 @@ namespace StackOverflow
         public void Configure(IApplicationBuilder app)
         {
             app.UseIISPlatformHandler();
-
             app.UseIdentity();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                      name: "default",
-                      template: "{controller=Account}/{action=Index}/{id}");
+                    name: "default",
+                    template: "{controller=Account}/{action=Index}/{id?}");
             });
-
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");

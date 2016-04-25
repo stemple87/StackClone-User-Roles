@@ -1,0 +1,15 @@
+﻿
+@model StackOverflow.Models.Question
+
+@using (Html.BeginForm())
+{
+    <label>Title</label> <br />
+    @Html.EditorFor(model => model.Title)
+
+    <label> Details </label> <br/>
+    @Html.EditorFor(model => model.Detail)
+
+    <input type = "submit" value = "Create" />
+}
+
+@Html.ActionLink("Back to List", "Index")
