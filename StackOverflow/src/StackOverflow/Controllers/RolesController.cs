@@ -40,7 +40,6 @@ namespace StackOverflow.Controllers
         [HttpPost]
         public IActionResult Create(string RoleName)
         {
-            
             try
             {
                 _db.Roles.Add(new IdentityRole()
