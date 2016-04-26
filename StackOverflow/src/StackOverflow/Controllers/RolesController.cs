@@ -9,6 +9,7 @@ using StackOverflow.Models;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Internal;
 using Microsoft.Data.Entity;
+using Microsoft.AspNet.Mvc.Rendering;
 
 namespace StackOverflow.Controllers
 {
@@ -67,7 +68,7 @@ namespace StackOverflow.Controllers
               _db.SaveChanges();
               return RedirectToAction("Index");
         }
-        [HttpGet]
+        
         public IActionResult Edit(string roleName)
         {
             var thisRole = _db.Roles
@@ -77,9 +78,9 @@ namespace StackOverflow.Controllers
             return View(thisRole);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(string roleName, string thing)
+        public IActionResult EditRole(string roleName)
         {
             try
             {
@@ -94,6 +95,17 @@ namespace StackOverflow.Controllers
             {
                 return View();
             }
+        }
+
+        public IActionResult ManageUserRoles()
+        {
+            var list = _db.Roles.OrderBy(r => r.Name)
+                .ToList()
+                .Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+
+            ViewBag.Roles = list;
+
+            return View();
         }
     }
 }
