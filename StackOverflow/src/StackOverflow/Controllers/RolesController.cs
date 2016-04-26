@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using StackOverflow.Models;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Internal;
+using Microsoft.Data.Entity;
 
 namespace StackOverflow.Controllers
 {
@@ -32,6 +33,7 @@ namespace StackOverflow.Controllers
             return View(roles);
         }
 
+        //Create
         public IActionResult Create()
         {
             return View();
@@ -57,5 +59,41 @@ namespace StackOverflow.Controllers
             }
         }
 
+        //Delete
+        public IActionResult Delete(string RoleName)
+        {
+            var thisRole = _db.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+              _db.Roles.Remove(thisRole);
+              _db.SaveChanges();
+              return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult Edit(string roleName)
+        {
+            var thisRole = _db.Roles
+                .Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase))
+                .FirstOrDefault();
+
+            return View(thisRole);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(string roleName, string thing)
+        {
+            try
+            {
+                var currentRole = _db.Roles.FirstOrDefault(m =>m.Name == roleName);
+                currentRole.Name = Request.Form["Name"];
+                _db.Roles.Update(currentRole);
+                _db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }
