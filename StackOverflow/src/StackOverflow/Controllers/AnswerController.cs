@@ -16,6 +16,7 @@ namespace StackOverflow.Controllers
     public class AnswerController : Controller
     {
         private readonly ApplicationDbContext _db;
+
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AnswerController(
