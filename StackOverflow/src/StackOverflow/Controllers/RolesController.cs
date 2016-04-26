@@ -10,6 +10,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Internal;
 using Microsoft.Data.Entity;
 using Microsoft.AspNet.Mvc.Rendering;
+using System.Security.Principal;
 
 namespace StackOverflow.Controllers
 {
@@ -168,6 +169,15 @@ namespace StackOverflow.Controllers
             //ViewBag.Roles = new SelectList(_db.Roles.ToList());
 
             return View("ManageUserRoles");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRoleForUser(string RoleName, string UserName)
+        {
+            var role = _userManager.RemoveFromRoleAsync(GetUser(UserName), RoleName).Result;
+
+            return RedirectToAction("ManageUserRoles");
         }
     }
 }
