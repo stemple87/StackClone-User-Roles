@@ -142,5 +142,32 @@ namespace StackOverflow.Controllers
             return _userManager.Users
                 .FirstOrDefault(m => m.UserName == UserName);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GetRoles(string UserName)
+        {
+
+            if (!string.IsNullOrWhiteSpace(UserName))
+            {
+                ApplicationUser user = _db.Users
+                    .Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+                ViewBag.RolesForThisUser = _userManager.GetRolesAsync(user).Result;
+
+                var list = _db.Roles
+                    .OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+
+                ViewBag.Roles = list;
+            }
+            //var userA = GetUser(UserName);
+            //ViewBag.User = userA;
+            //ViewBag.RolesForThisUser = _userManager.GetRolesAsync(userA).Result;
+
+            //ViewBag.Users = new SelectList(_userManager.Users.ToList());
+            //ViewBag.Roles = new SelectList(_db.Roles.ToList());
+
+            return View("ManageUserRoles");
+        }
     }
 }
