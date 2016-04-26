@@ -28,7 +28,7 @@ namespace StackOverflow.Controllers
             _db = db;
         }
 
-        // GET: /<controller>/
+      
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
