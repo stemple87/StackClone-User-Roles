@@ -16,9 +16,15 @@
     {
         <input type="submit" class="btn btn-default" value="Log out" />
     }
-
-    @Html.ActionLink("Create", "Create", "Question")
-    @Html.ActionLink("Questions", "Index", "Question")
+    <div>
+        @Html.ActionLink("Create", "Create", "Question")
+    </div>
+    <dvi>
+        @Html.ActionLink("Questions", "Index", "Question")
+    </dvi>
+    <div>
+        @Html.ActionLink("User Roles", "Create", "Roles")
+    </div>
 }
 else
 {
