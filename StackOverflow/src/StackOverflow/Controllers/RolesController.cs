@@ -14,7 +14,7 @@ using System.Security.Principal;
 
 namespace StackOverflow.Controllers
 {
-    [Authorize]
+   
     public class RolesController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -29,6 +29,7 @@ namespace StackOverflow.Controllers
         }
 
         // GET: /<controller>/
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var roles = _db.Roles.ToList();
@@ -36,12 +37,15 @@ namespace StackOverflow.Controllers
         }
 
         //Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(string RoleName)
         {
             try
@@ -62,6 +66,7 @@ namespace StackOverflow.Controllers
         }
 
         //Delete
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(string RoleName)
         {
             var thisRole = _db.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
@@ -69,7 +74,8 @@ namespace StackOverflow.Controllers
               _db.SaveChanges();
               return RedirectToAction("Index");
         }
-        
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(string roleName)
         {
             var thisRole = _db.Roles
@@ -80,6 +86,7 @@ namespace StackOverflow.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public IActionResult EditRole(string roleName)
         {
@@ -98,6 +105,7 @@ namespace StackOverflow.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult ManageUserRoles()
         {
             var list = _db.Roles.OrderBy(r => r.Name)
@@ -111,6 +119,7 @@ namespace StackOverflow.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult RoleAddToUser (string UserName, string RoleName)
         {
             //ApplicationUser user = _db.Users
@@ -138,6 +147,7 @@ namespace StackOverflow.Controllers
             
         }
 
+        [Authorize(Roles = "Admin")]
         public ApplicationUser GetUser(string UserName)
         {
             return _userManager.Users
@@ -146,6 +156,7 @@ namespace StackOverflow.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetRoles(string UserName)
         {
 
@@ -173,6 +184,7 @@ namespace StackOverflow.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteRoleForUser(string RoleName, string UserName)
         {
             var role = _userManager.RemoveFromRoleAsync(GetUser(UserName), RoleName).Result;

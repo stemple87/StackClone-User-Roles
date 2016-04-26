@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+
 @using System.Security.Claims
 
 
@@ -19,12 +21,16 @@
     <div>
         @Html.ActionLink("Create", "Create", "Question")
     </div>
-    <dvi>
-        @Html.ActionLink("Questions", "Index", "Question")
-    </dvi>
     <div>
-        @Html.ActionLink("User Roles", "Create", "Roles")
+        @Html.ActionLink("Questions", "Index", "Question")
     </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div>
+            @Html.ActionLink("User Roles", "Create", "Roles")
+        </div>
+    }
+
 }
 else
 {
