@@ -107,5 +107,40 @@ namespace StackOverflow.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RoleAddToUser (string UserName, string RoleName)
+        {
+            //ApplicationUser user = _db.Users
+            //    .Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase))
+            //    .FirstOrDefault();
+
+            //var account = new AccountController();
+
+            //account.UserManager.AddToRole(user.Id, RoleName);
+
+            //ViewBag.ResultMessage = "Role Created Successfully";
+
+            //var list = _db.Roles
+            //    .OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+
+            //ViewBag.Roles = list;
+
+            //return View("ManageUserRoles");
+
+            var user = GetUser(UserName);
+
+            var role = _userManager.AddToRoleAsync(user, RoleName).Result;
+
+            return RedirectToAction("ManageUserRoles");
+            
+        }
+
+        public ApplicationUser GetUser(string UserName)
+        {
+            return _userManager.Users
+                .FirstOrDefault(m => m.UserName == UserName);
+        }
     }
 }
